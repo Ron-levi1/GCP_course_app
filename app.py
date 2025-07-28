@@ -95,10 +95,10 @@ if st.session_state.get("registered"):
 
     col1, col2, col3 = st.columns([1, 2, 1])
     with col1:
-        if st.button("הקודם▶️") and st.session_state["slide_index"] > 0:
+        if st.button("▶️ הקודם") and st.session_state["slide_index"] > 0:
             st.session_state["slide_index"] -= 1
     with col3:
-        if st.button("הבא◀️") and st.session_state["slide_index"] < total_slides - 1:
+        if st.button("◀️ הבא") and st.session_state["slide_index"] < total_slides - 1:
             st.session_state["slide_index"] += 1
 
     st.caption(f"שקופית {st.session_state['slide_index'] + 1} מתוך {total_slides}")
