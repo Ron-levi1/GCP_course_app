@@ -14,10 +14,10 @@ st.markdown(
         text-align: right;
     }
     h1, h2, h3, h4, h5, h6 {
-        text-align: left;
+        text-align: center;
     }
     p {
-        text-align: left;
+        text-align: right;
     }
     .question {
         font-weight: bold;
@@ -93,15 +93,15 @@ if st.session_state.get("registered"):
     pix.save(img_path)
     st.image(img_path, use_container_width=True)
 
-    center_col = st.columns([2, 1, 2])
-    with center_col[1]:
-        col_prev, col_next = st.columns([1, 1])
-        with col_prev:
-            if st.button("הקודם") and st.session_state["slide_index"] > 0:
-                st.session_state["slide_index"] -= 1
-        with col_next:
-            if st.button("הבא") and st.session_state["slide_index"] < total_slides - 1:
+    nav_cols = st.columns([1, 6, 1])
+    with nav_cols[0]:
+        if st.button("הבא ▶"):
+            if st.session_state["slide_index"] < total_slides - 1:
                 st.session_state["slide_index"] += 1
+    with nav_cols[2]:
+        if st.button("◀ הקודם"):
+            if st.session_state["slide_index"] > 0:
+                st.session_state["slide_index"] -= 1
 
     st.caption(f"שקופית {st.session_state['slide_index'] + 1} מתוך {total_slides}")
 
