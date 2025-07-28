@@ -93,13 +93,15 @@ if st.session_state.get("registered"):
     pix.save(img_path)
     st.image(img_path, use_container_width=True)
 
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col1:
-        if st.button("▶️ הקודם") and st.session_state["slide_index"] > 0:
-            st.session_state["slide_index"] -= 1
-    with col3:
-        if st.button("◀️ הבא") and st.session_state["slide_index"] < total_slides - 1:
-            st.session_state["slide_index"] += 1
+    center_col = st.columns([2, 1, 2])  # שלוש עמודות: שמאל, אמצע, ימין
+    with center_col[1]:  # הכפתורים יהיו בעמודה האמצעית
+        col_prev, col_next = st.columns([1, 1])  # פיצול פנימי לשני כפתורים
+        with col_prev:
+            if st.button("◀️ הקודם") and st.session_state["slide_index"] > 0:
+                st.session_state["slide_index"] -= 1
+        with col_next:
+            if st.button("הבא ▶️") and st.session_state["slide_index"] < total_slides - 1:
+                st.session_state["slide_index"] += 1
 
     st.caption(f"שקופית {st.session_state['slide_index'] + 1} מתוך {total_slides}")
 
