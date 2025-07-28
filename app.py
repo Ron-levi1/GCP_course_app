@@ -26,12 +26,6 @@ st.markdown(
     .answer {
         margin-left: 20px;
     }
-    div.stButton > button {
-        width: 100px;
-        height: 50px;
-        margin: auto;
-        display: block;
-    }
     </style>
     """,
     unsafe_allow_html=True
@@ -99,17 +93,15 @@ if st.session_state.get("registered"):
     pix.save(img_path)
     st.image(img_path, use_container_width=True)
 
-    center = st.columns([3, 2, 3])
-    with center[1]:
-        col_prev, col_next = st.columns([1, 1], gap="small")
+    center_col = st.columns([2, 1, 2])
+    with center_col[1]:
+        col_prev, col_next = st.columns([1, 1])
         with col_prev:
-            if st.button("◀ הקודם"):
-                if st.session_state["slide_index"] > 0:
-                    st.session_state["slide_index"] -= 1
+            if st.button("הקודם") and st.session_state["slide_index"] > 0:
+                st.session_state["slide_index"] -= 1
         with col_next:
-            if st.button("הבא ▶"):
-                if st.session_state["slide_index"] < total_slides - 1:
-                    st.session_state["slide_index"] += 1
+            if st.button("הבא") and st.session_state["slide_index"] < total_slides - 1:
+                st.session_state["slide_index"] += 1
 
     st.caption(f"שקופית {st.session_state['slide_index'] + 1} מתוך {total_slides}")
 
