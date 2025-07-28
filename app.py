@@ -10,8 +10,8 @@ st.markdown(
     """
     <style>
     .block-container {
-        direction: ltr;
-        text-align: left;
+        direction: rtl;
+        text-align: right;
     }
     h1, h2, h3, h4, h5, h6 {
         text-align: left;
