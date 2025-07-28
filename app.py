@@ -95,11 +95,11 @@ if st.session_state.get("registered"):
 
     nav_cols = st.columns([1, 6, 1])
     with nav_cols[0]:
-        if st.button("הבא ▶"):
+        if st.button("הבא"):
             if st.session_state["slide_index"] < total_slides - 1:
                 st.session_state["slide_index"] += 1
     with nav_cols[2]:
-        if st.button("◀ הקודם"):
+        if st.button("הקודם"):
             if st.session_state["slide_index"] > 0:
                 st.session_state["slide_index"] -= 1
 
