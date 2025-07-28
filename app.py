@@ -27,6 +27,16 @@ st.markdown(
         margin-left: 20px;
     }
     </style>
+    <script>
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowRight') {
+            window.parent.postMessage({type: 'next_slide'}, '*');
+        }
+        if (e.key === 'ArrowLeft') {
+            window.parent.postMessage({type: 'prev_slide'}, '*');
+        }
+    });
+    </script>
     """,
     unsafe_allow_html=True
 )
@@ -87,6 +97,13 @@ if st.session_state.get("registered"):
     if "slide_index" not in st.session_state:
         st.session_state["slide_index"] = 0
 
+    message = st.query_params if hasattr(st, "query_params") else {}
+    if 'type' in message:
+        if message['type'][0] == 'next_slide' and st.session_state["slide_index"] < total_slides - 1:
+            st.session_state["slide_index"] += 1
+        if message['type'][0] == 'prev_slide' and st.session_state["slide_index"] > 0:
+            st.session_state["slide_index"] -= 1
+
     page = pdf_doc[st.session_state["slide_index"]]
     pix = page.get_pixmap()
     img_path = os.path.join(OUTPUT_DIR, "temp_slide.png")
@@ -95,11 +112,11 @@ if st.session_state.get("registered"):
 
     nav_cols = st.columns([1, 6, 1])
     with nav_cols[0]:
-        if st.button("הבא▶"):
+        if st.button("הבא ▶"):
             if st.session_state["slide_index"] < total_slides - 1:
                 st.session_state["slide_index"] += 1
     with nav_cols[2]:
-        if st.button("◀הקודם"):
+        if st.button("◀ הקודם"):
             if st.session_state["slide_index"] > 0:
                 st.session_state["slide_index"] -= 1
 
