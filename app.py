@@ -41,7 +41,8 @@ if not os.path.exists(OUTPUT_DIR):
 
 st.title("welcome to the GCP refresher course")
 
-st.title("נא להזין את פרטיך")
+st.markdown("<h2 style='text-align:right; direction:rtl;'>נא להזין את פרטיך</h2>", unsafe_allow_html=True)
+
 name = st.text_input("שם מלא באנגלית")
 if name and not re.match(r'^[A-Za-z ]+$', name):
     st.error("יש להכניס שם באנגלית בלבד")
