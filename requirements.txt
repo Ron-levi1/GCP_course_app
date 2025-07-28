@@ -4,4 +4,3 @@ openpyxl
 python-docx
 docx2pdf
 PyMuPDF
-
