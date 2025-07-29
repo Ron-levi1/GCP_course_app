@@ -45,7 +45,7 @@ st.markdown(
 st.markdown(
     """
     <div style='text-align: center;'>
-        <img src='assets/logo.png' width='320'>
+        <img src='assets/SHEBA_LOGO.png' width='320'>
     </div>
     """,
     unsafe_allow_html=True
