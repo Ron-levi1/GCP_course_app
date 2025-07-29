@@ -5,6 +5,19 @@ from docx import Document
 from docx2pdf import convert
 import os
 
+st.markdown("""
+    <style>
+    .block-container {
+        direction: rtl;
+        text-align: right;
+        font-family: Calibri, sans-serif;
+    }
+    h1, h2, h3, h4, h5, h6, p {
+        font-family: Calibri, sans-serif;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 st.markdown(
     """
     <style>
