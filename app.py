@@ -78,6 +78,17 @@ if st.session_state.get("registered"):
         unsafe_allow_html=True
     )
 
+    st.markdown(
+        """
+        <style>
+        a[href*="canva.com"] {
+            display: none !important;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
     if st.button("עבור למבחן"):
         st.session_state["quiz_started"] = True
 
