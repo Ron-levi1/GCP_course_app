@@ -1,7 +1,6 @@
 import streamlit as st
 import re
 import pandas as pd
-import fitz
 from docx import Document
 from docx2pdf import convert
 import os
@@ -26,31 +25,23 @@ st.markdown(
     .answer {
         margin-left: 20px;
     }
+    iframe {
+        border: none;
+        margin-top: 20px;
+    }
     </style>
-    <script>
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'ArrowRight') {
-            window.parent.postMessage({type: 'next_slide'}, '*');
-        }
-        if (e.key === 'ArrowLeft') {
-            window.parent.postMessage({type: 'prev_slide'}, '*');
-        }
-    });
-    </script>
     """,
     unsafe_allow_html=True
 )
 
 QUESTIONS_FILE = "אקסל שאלות + התשובה הנכונה.xlsx"
 CERTIFICATE_TEMPLATE = "CERTIFICATE.docx"
-PRESENTATION_FILE = "assets/קורס רענון לחידוש התעודה - גרסה סופית.pdf"
 OUTPUT_DIR = "output"
 
 if not os.path.exists(OUTPUT_DIR):
     os.makedirs(OUTPUT_DIR)
 
 st.title("welcome to the GCP refresher course")
-
 st.markdown("<h2 style='text-align:right; direction:rtl;'>נא להזין את פרטיך</h2>", unsafe_allow_html=True)
 
 name = st.text_input("שם מלא באנגלית")
@@ -91,40 +82,22 @@ if st.session_state.get("registered"):
 
     st.markdown("<h2 style='text-align:right; direction:rtl;'>יש לעבור על מצגת הקורס, בסיומו יש לענות על המבחן</h2>", unsafe_allow_html=True)
 
-    pdf_doc = fitz.open(PRESENTATION_FILE)
-    total_slides = len(pdf_doc)
+    st.markdown(
+        """
+        <div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%;
+         padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden;
+         border-radius: 8px; will-change: transform;">
+          <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
+            src="https://www.canva.com/design/DAGksdqsOYk/WuwpZFV-DcQPubRJQp4rBA/view?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
+          </iframe>
+        </div>
+        <a href="https://www.canva.com/design/DAGksdqsOYk/WuwpZFV-DcQPubRJQp4rBA/view?utm_content=DAGksdqsOYk&utm_campaign=designshare&utm_medium=embeds&utm_source=link" target="_blank" rel="noopener">קורס רענון לחידוש התעודה - גרסה סופית</a> by Ron Levi
+        """,
+        unsafe_allow_html=True
+    )
 
-    if "slide_index" not in st.session_state:
-        st.session_state["slide_index"] = 0
-
-    message = st.query_params if hasattr(st, "query_params") else {}
-    if 'type' in message:
-        if message['type'][0] == 'next_slide' and st.session_state["slide_index"] < total_slides - 1:
-            st.session_state["slide_index"] += 1
-        if message['type'][0] == 'prev_slide' and st.session_state["slide_index"] > 0:
-            st.session_state["slide_index"] -= 1
-
-    page = pdf_doc[st.session_state["slide_index"]]
-    pix = page.get_pixmap()
-    img_path = os.path.join(OUTPUT_DIR, "temp_slide.png")
-    pix.save(img_path)
-    st.image(img_path, use_container_width=True)
-
-    nav_cols = st.columns([1, 6, 1])
-    with nav_cols[0]:
-        if st.button("הבא ▶"):
-            if st.session_state["slide_index"] < total_slides - 1:
-                st.session_state["slide_index"] += 1
-    with nav_cols[2]:
-        if st.button("◀ הקודם"):
-            if st.session_state["slide_index"] > 0:
-                st.session_state["slide_index"] -= 1
-
-    st.caption(f"שקופית {st.session_state['slide_index'] + 1} מתוך {total_slides}")
-
-    if st.session_state["slide_index"] == total_slides - 1:
-        if st.button("עבור למבחן"):
-            st.session_state["quiz_started"] = True
+    if st.button("עבור למבחן"):
+        st.session_state["quiz_started"] = True
 
 if st.session_state.get("quiz_started"):
     st.header("מבחן")
