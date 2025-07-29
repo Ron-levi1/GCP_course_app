@@ -107,8 +107,10 @@ if st.session_state.get("registered"):
         st.session_state["quiz_started"] = True
 
 if st.session_state.get("quiz_started"):
-    st.header("מבחן")
-    st.markdown("<h2 style='text-align:center; direction:rtl;'>כדי לעבור את המבחן ולקבל את התעודה, יש לעבור את המבחן בציון 80 לפחות. בהצלחה! </h3>",
+    st.markdown("<h2 style='text-align:center; direction:rtl;'>מבחן</h2>",
+                unsafe_allow_html=True)
+
+    st.markdown("<h3 style='text-align:center; direction:rtl; color:gray;'>יש לעבור את המבחן בציון 80 לפחות על מנת לקבל את התעודה</h3>",
                 unsafe_allow_html=True)
 
     df = pd.read_excel(QUESTIONS_FILE)
