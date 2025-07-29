@@ -5,6 +5,55 @@ from docx import Document
 from docx2pdf import convert
 import os
 
+st.markdown(
+    """
+    <style>
+    .block-container {
+        direction: rtl;
+        text-align: right;
+        font-family: Calibri, sans-serif;
+    }
+    h1, h2, h3, h4, h5, h6 {
+        text-align: center;
+        font-family: Calibri, sans-serif;
+    }
+    p, label, .stRadio, .stButton {
+        font-family: Calibri, sans-serif;
+    }
+    .stButton>button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 24px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        border-radius: 8px;
+        transition-duration: 0.4s;
+        border: none;
+    }
+    .stButton>button:hover {
+        background-color: #45a049;
+        color: white;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+st.markdown(
+    """
+    <div style='text-align: center;'>
+        <img src='assets/logo.png' width='320'>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+
+
+
 st.markdown("""
     <style>
     .block-container {
