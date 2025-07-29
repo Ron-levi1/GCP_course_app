@@ -42,15 +42,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.markdown(
-    """
-    <div style='text-align: center;'>
-        <img src='assets/SHEBA_LOGO.png' width='320'>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
-
+st.image("assets/SHEBA_LOGO.png", use_container_width=False)
 
 
 
