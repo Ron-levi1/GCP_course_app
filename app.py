@@ -68,17 +68,6 @@ if st.session_state.get("registered"):
         </script>
         """,
         unsafe_allow_html=True
-    )
-
-    if st.button("הפעל מסך מלא"):
-        st.markdown(
-            """
-            <script>
-            document.documentElement.requestFullscreen();
-            </script>
-            """,
-            unsafe_allow_html=True
-        )
 
     st.markdown("<h2 style='text-align:right; direction:rtl;'>יש לעבור על מצגת הקורס, בסיומו יש לענות על המבחן</h2>", unsafe_allow_html=True)
 
