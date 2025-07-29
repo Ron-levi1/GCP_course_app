@@ -40,7 +40,7 @@ st.markdown(
     </style>
     """,
     unsafe_allow_html=True
-    )
+)
 
 st.markdown("""
     <style>
@@ -91,17 +91,14 @@ OUTPUT_DIR = "output"
 if not os.path.exists(OUTPUT_DIR):
     os.makedirs(OUTPUT_DIR)
 
-
 st.markdown(
     """
     <div style='text-align: center; margin-bottom: -30px;'>
-        <img src='assets/SHEBA_LOGO.png' width='320'>
+        <img src='SHEBA_LOGO.png' width='320'>
     </div>
     """,
     unsafe_allow_html=True
 )
-
-
 
 st.title("welcome to the GCP refresher course")
 st.markdown("<h2 style='text-align:right; direction:rtl;'>נא להזין את פרטיך</h2>", unsafe_allow_html=True)
@@ -150,7 +147,6 @@ if st.session_state.get("registered"):
         """,
         unsafe_allow_html=True
     )
-
 
     if st.button("עבור למבחן"):
         st.session_state["quiz_started"] = True
