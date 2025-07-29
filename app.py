@@ -91,15 +91,6 @@ OUTPUT_DIR = "output"
 if not os.path.exists(OUTPUT_DIR):
     os.makedirs(OUTPUT_DIR)
 
-st.markdown(
-    """
-    <div style='text-align: center; margin-bottom: -30px;'>
-        <img src='SHEBA_LOGO.png' width='320'>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
-
 st.title("welcome to the GCP refresher course")
 st.markdown("<h2 style='text-align:right; direction:rtl;'>נא להזין את פרטיך</h2>", unsafe_allow_html=True)
 
