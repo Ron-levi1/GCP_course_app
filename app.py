@@ -61,27 +61,19 @@ if st.button("אישור"):
         st.warning("נא למלא שם ותעודת זהות")
 
 if st.session_state.get("registered"):
-    st.markdown(
-        """
-        <script>
-        document.documentElement.requestFullscreen();
-        </script>
-        """,
-        unsafe_allow_html=True
-        )
 
     st.markdown("<h2 style='text-align:right; direction:rtl;'>יש לעבור על מצגת הקורס, בסיומו יש לענות על המבחן</h2>", unsafe_allow_html=True)
 
     st.markdown(
         """
         <div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%;
-         padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden;
-         border-radius: 8px; will-change: transform;">
-          <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
-            src="https://www.canva.com/design/DAGksdqsOYk/WuwpZFV-DcQPubRJQp4rBA/view?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
-          </iframe>
-        </div>
-        <a href="https://www.canva.com/design/DAGksdqsOYk/WuwpZFV-DcQPubRJQp4rBA/view?utm_content=DAGksdqsOYk&utm_campaign=designshare&utm_medium=embeds&utm_source=link" target="_blank" rel="noopener">קורס רענון לחידוש התעודה - גרסה סופית</a> by Ron Levi
+ padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden;
+ border-radius: 8px; will-change: transform;">
+  <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
+    src="https://www.canva.com/design/DAGksdqsOYk/WuwpZFV-DcQPubRJQp4rBA/view?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
+  </iframe>
+</div>
+<a href="https:&#x2F;&#x2F;www.canva.com&#x2F;design&#x2F;DAGksdqsOYk&#x2F;WuwpZFV-DcQPubRJQp4rBA&#x2F;view?utm_content=DAGksdqsOYk&amp;utm_campaign=designshare&amp;utm_medium=embeds&amp;utm_source=link" target="_blank" rel="noopener">קורס רענון לחידוש התעודה - גרסה סופית</a> by Ron Levi
         """,
         unsafe_allow_html=True
     )
