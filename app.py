@@ -102,8 +102,16 @@ if st.session_state.get("registered"):
         unsafe_allow_html=True
     )
 
-    if st.button("עבור למבחן"):
-        st.session_state["quiz_started"] = True
+    if st.button("✔ סיימתי לצפות במצגת"):
+        st.session_state["finished_presentation"] = True
+
+    if st.session_state.get("finished_presentation", False):
+        st.markdown(
+            "<a href='#quiz' class='big-button'>עבור למבחן</a>",
+            unsafe_allow_html=True
+        )
+
+
 
 if st.session_state.get("quiz_started"):
     st.header("מבחן")
