@@ -40,17 +40,7 @@ st.markdown(
     </style>
     """,
     unsafe_allow_html=True
-)
-
-st.markdown(
-    """
-    <div style='text-align: center; margin-bottom: -30px;'>
-        <img src='assets/SHEBA_LOGO.png' width='320'>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
-
+    )
 
 st.markdown("""
     <style>
@@ -110,6 +100,7 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
 
 
 st.title("welcome to the GCP refresher course")
