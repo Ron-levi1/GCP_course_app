@@ -1,4 +1,3 @@
-pip install pydrive
 
 import streamlit as st
 import re
@@ -6,10 +5,6 @@ import pandas as pd
 from docx import Document
 from docx2pdf import convert
 import os
-from pydrive.auth import GoogleAuth
-from pydrive.drive import GoogleDrive
-
-
 
 st.markdown(
     """
@@ -218,7 +213,6 @@ if st.session_state.get("quiz_started"):
         if score >= 80:
             st.success("כל הכבוד! עברת את הרענון בהצלחה.")
 
-
             cert_doc = Document(CERTIFICATE_TEMPLATE)
             for p in cert_doc.paragraphs:
                 if "[the name]" in p.text:
@@ -226,18 +220,11 @@ if st.session_state.get("quiz_started"):
                 if "[the ID]" in p.text:
                     p.text = p.text.replace("[the ID]", st.session_state["id_number"])
 
-            certificate_path = os.path.join(OUTPUT_DIR, f"תעודה_{st.session_state['id_number']}.docx")
-            cert_doc.save(certificate_path)
+            filled_docx = os.path.join(OUTPUT_DIR, f"תעודה_{st.session_state['id_number']}.docx")
+            cert_doc.save(filled_docx)
 
-            gauth = GoogleAuth()
-            gauth.LocalWebserverAuth()
-            drive = GoogleDrive(gauth)
+            st.success("✅ התעודה נשמרה בהצלחה בתיקיית output")
 
-            file_drive = drive.CreateFile({'title': f'GCP_Certificate_{st.session_state["name"]}.docx'})
-            file_drive.SetContentFile(certificate_path)
-            file_drive.Upload()
-
-            st.success("✅ התעודה נוצרה בהצלחה!")
 
 
 
