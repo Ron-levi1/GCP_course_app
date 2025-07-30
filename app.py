@@ -173,7 +173,7 @@ if st.session_state.get("quiz_started"):
         unsafe_allow_html=True)
 
     df = pd.read_excel(QUESTIONS_FILE)
-    questions = df.sample(15).reset_index(drop=True)
+    questions = df.sample(10).reset_index(drop=True)
 
     answers = []
     for i, row in questions.iterrows():
@@ -192,9 +192,9 @@ if st.session_state.get("quiz_started"):
             if answers[i] == row['correct']:
                 correct += 1
 
-        score = round((correct / 15) * 100, 2)
+        score = round((correct / 10) * 100, 2)
 
-        st.write(f"ציון סופי: {correct}/15 ({score}%)")
+        st.write(f"ציון סופי: {correct}/10 ({score}%)")
 
         if score >= 80:
             st.success("🎉 כל הכבוד! עברת את הרענון בהצלחה.\n\nלקבלת התעודה יש לשלוח מייל לועדת הלסינקי")
