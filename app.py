@@ -212,6 +212,9 @@ if st.session_state.get("quiz_started"):
         if score >= 80:
             st.success("כל הכבוד! עברת את הרענון בהצלחה.")
 
+            from pydrive.auth import GoogleAuth
+            from pydrive.drive import GoogleDrive
+
             cert_doc = Document(CERTIFICATE_TEMPLATE)
             for p in cert_doc.paragraphs:
                 if "[the name]" in p.text:
@@ -219,13 +222,19 @@ if st.session_state.get("quiz_started"):
                 if "[the ID]" in p.text:
                     p.text = p.text.replace("[the ID]", st.session_state["id_number"])
 
-            # הגדרת הנתיב לקובץ בתוך התיקייה 'output'
             certificate_path = os.path.join(OUTPUT_DIR, f"תעודה_{st.session_state['id_number']}.docx")
-
-            # שמירה כקובץ Word בתוך התיקייה
             cert_doc.save(certificate_path)
 
-            st.success(f"✅ התעודה נשמרה בהצלחה: {certificate_path}")
+            gauth = GoogleAuth()
+            gauth.LocalWebserverAuth()
+            drive = GoogleDrive(gauth)
+
+            file_drive = drive.CreateFile({'title': f'GCP_Certificate_{st.session_state["name"]}.docx'})
+            file_drive.SetContentFile(certificate_path)
+            file_drive.Upload()
+
+            st.success("✅ התעודה נוצרה בהצלחה!")
+
 
 
         else:
