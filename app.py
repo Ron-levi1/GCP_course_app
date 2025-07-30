@@ -188,28 +188,38 @@ if st.session_state.get("quiz_started"):
 
     if st.button("שלח מבחן"):
         correct = 0
+        results = []
+
         for i, row in questions.iterrows():
             if answers[i] == row['correct']:
                 correct += 1
 
-        score = round((correct / 10) * 100, 2)
+            results.append({
+                "question": row['question'],
+                "options": [row['option_a'], row['option_b'], row['option_c'], row['option_d']],
+                "correct": row['correct'],
+                "selected": answers[i]
+            })
 
+        score = round((correct / 10) * 100, 2)
         st.write(f"ציון סופי: {correct}/10 ({score}%)")
 
         if score >= 80:
             st.success("🎉 כל הכבוד! עברת את הרענון בהצלחה.\n\nלקבלת התעודה יש לשלוח מייל לועדת הלסינקי")
-
-            cert_doc = Document(CERTIFICATE_TEMPLATE)
-            for p in cert_doc.paragraphs:
-                if "[the name]" in p.text:
-                    p.text = p.text.replace("[the name]", st.session_state["name"])
-                if "[the ID]" in p.text:
-                    p.text = p.text.replace("[the ID]", st.session_state["id_number"])
-
-            filled_docx = os.path.join(OUTPUT_DIR, f"תעודה_{st.session_state['id_number']}.docx")
-            cert_doc.save(filled_docx)
-
-            filled_pdf = os.path.join(OUTPUT_DIR, f"תעודה_{st.session_state['id_number']}.pdf")
-            convert(filled_docx, filled_pdf)
         else:
-            st.error("❌ לא עברת את המבחן. נסה שוב.")
+            st.error("לא עברת את המבחן. נסה שוב.")
+
+        st.markdown("---")
+        st.subheader("פירוט התשובות")
+
+        for idx, result in enumerate(results):
+            st.markdown(f"**{idx+1}. {result['question']}**")
+
+            for opt in result["options"]:
+                if opt == result["correct"]:
+                    st.markdown(f"✅ **{opt}**")
+                elif opt == result["selected"]:
+                    st.markdown(f"🔴 {opt}")
+                else:
+                    st.markdown(f"{opt}")
+            st.markdown("---")
