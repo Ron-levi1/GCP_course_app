@@ -113,6 +113,8 @@ if st.button("אישור"):
 if st.session_state.get("registered"):
 
     st.markdown("<h2 style='text-align:center; direction:rtl;'>יש לעבור על מצגת הקורס, בסיומה יש לענות על המבחן</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align:center; direction:rtl;font-size: 16px;'>יש לעבור על מצגת הקורס, בסיומה יש לענות על המבחן</h2>",
+                unsafe_allow_html=True)
 
     st.markdown(
         """
