@@ -192,7 +192,8 @@ if st.session_state.get("quiz_started"):
             if answers[i] == row['correct']:
                 correct += 1
 
-        score = (correct / 15) * 100
+        score = round((correct / 15) * 100, 2)
+
         st.write(f"ציון סופי: {correct}/15 ({score}%)")
 
         if score >= 80:
