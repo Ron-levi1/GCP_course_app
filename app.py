@@ -165,25 +165,30 @@ if st.session_state.get("registered"):
         st.session_state["quiz_started"] = True
 
 if st.session_state.get("quiz_started"):
-    st.markdown("<h2 style='text-align:center; direction:rtl;'>מבחן:</h2>",
-                unsafe_allow_html=True)
-
+    st.markdown("<h2 style='text-align:center; direction:rtl;'>מבחן:</h2>", unsafe_allow_html=True)
     st.markdown(
         "<h3 style='text-align:center; direction:rtl; color:gray; font-size:17px; font-weight:normal;margin-bottom:30px;'>יש לעבור את המבחן בציון 80 לפחות על מנת לקבל את התעודה</h3>",
         unsafe_allow_html=True)
 
     df = pd.read_excel(QUESTIONS_FILE)
-    questions = df.sample(10).reset_index(drop=True)
 
-    answers = []
+    if "questions" not in st.session_state:
+        st.session_state["questions"] = df.sample(10).reset_index(drop=True)
+
+    questions = st.session_state["questions"]
+
+    if "answers" not in st.session_state:
+        st.session_state["answers"] = [None] * len(questions)
+
     for i, row in questions.iterrows():
         st.markdown(f"<div class='question'>{i+1}. {row['question']}</div>", unsafe_allow_html=True)
-        ans = st.radio(
+        selected = st.radio(
             "",
             [row['option_a'], row['option_b'], row['option_c'], row['option_d']],
+            index=None,
             key=f"q_{i}"
         )
-        answers.append(ans)
+        st.session_state["answers"][i] = selected if selected else st.session_state["answers"][i]
         st.markdown("<br>", unsafe_allow_html=True)
 
     if st.button("שלח מבחן"):
@@ -191,21 +196,21 @@ if st.session_state.get("quiz_started"):
         results = []
 
         for i, row in questions.iterrows():
-            if answers[i] == row['correct']:
+            user_answer = st.session_state["answers"][i]
+            if user_answer == row['correct']:
                 correct += 1
-
             results.append({
                 "question": row['question'],
                 "options": [row['option_a'], row['option_b'], row['option_c'], row['option_d']],
                 "correct": row['correct'],
-                "selected": answers[i]
+                "selected": user_answer
             })
 
         score = round((correct / 10) * 100, 2)
         st.write(f"ציון סופי: {correct}/10 ({score}%)")
 
         if score >= 80:
-            st.success("🎉 כל הכבוד! עברת את הרענון בהצלחה.\n\nלקבלת התעודה יש לשלוח מייל לועדת הלסינקי")
+            st.success("כל הכבוד! עברת את הרענון בהצלחה.")
         else:
             st.error("לא עברת את המבחן. נסה שוב.")
 
@@ -214,7 +219,6 @@ if st.session_state.get("quiz_started"):
 
         for idx, result in enumerate(results):
             st.markdown(f"**{idx+1}. {result['question']}**")
-
             for opt in result["options"]:
                 if opt == result["correct"]:
                     st.markdown(f"✅ **{opt}**")
