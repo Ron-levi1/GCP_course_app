@@ -196,7 +196,7 @@ if st.session_state.get("quiz_started"):
         st.write(f"ציון סופי: {correct}/15 ({score}%)")
 
         if score >= 80:
-            st.success("עברת את המבחן")
+            st.success("🎉 כל הכבוד! עברת את הרענון בהצלחה.\n\nלקבלת התעודה יש לשלוח מייל לועדת הלסינקי")
 
             cert_doc = Document(CERTIFICATE_TEMPLATE)
             for p in cert_doc.paragraphs:
@@ -205,14 +205,10 @@ if st.session_state.get("quiz_started"):
                 if "[the ID]" in p.text:
                     p.text = p.text.replace("[the ID]", st.session_state["id_number"])
 
-            filled_docx = os.path.join(OUTPUT_DIR, "תעודה_אישית.docx")
+            filled_docx = os.path.join(OUTPUT_DIR, f"תעודה_{st.session_state['id_number']}.docx")
             cert_doc.save(filled_docx)
 
-            filled_pdf = os.path.join(OUTPUT_DIR, "תעודה_אישית.pdf")
+            filled_pdf = os.path.join(OUTPUT_DIR, f"תעודה_{st.session_state['id_number']}.pdf")
             convert(filled_docx, filled_pdf)
-
-            with open(filled_pdf, "rb") as f:
-                file_name = f"GCP Certificate - {st.session_state['name']}.pdf"
-                st.download_button("הורד תעודה", f, file_name=file_name)
         else:
-            st.error("לא עברת את המבחן. נסה שוב.")
+            st.error("❌ לא עברת את המבחן. נסה שוב.")
