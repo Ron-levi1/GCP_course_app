@@ -219,10 +219,13 @@ if st.session_state.get("quiz_started"):
                 if "[the ID]" in p.text:
                     p.text = p.text.replace("[the ID]", st.session_state["id_number"])
 
-            filled_docx = os.path.join(OUTPUT_DIR, f"תעודה_{st.session_state['id_number']}.docx")
-            cert_doc.save(filled_docx)
+            # הגדרת הנתיב לקובץ בתוך התיקייה 'output'
+            certificate_path = os.path.join(OUTPUT_DIR, f"תעודה_{st.session_state['id_number']}.docx")
 
-            st.success("✅ נוצרה תעודה! יש לפנות לועדת הלסינקי על מנת לקבל אותה")
+            # שמירה כקובץ Word בתוך התיקייה
+            cert_doc.save(certificate_path)
+
+            st.success(f"✅ התעודה נשמרה בהצלחה: {certificate_path}")
 
 
         else:
