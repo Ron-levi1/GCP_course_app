@@ -93,16 +93,21 @@ if not os.path.exists(OUTPUT_DIR):
 
 import streamlit as st
 
+import streamlit as st
+
 st.markdown(
     """
-    <h1 style='text-align:center; direction:rtl; 
-               color: #d8629c; 
-               font-family: Arial, sans-serif; 
-               font-size: 50px;
-               text-shadow: 2px 2px 4px #aaa;'>
-        Welcome to the GCP Refresher Course
-    </h1>
-    """, unsafe_allow_html=True
+    <div style='text-align: center;'>
+        <h1 style='color: #f772b3;
+                   font-family: Arial, sans-serif;
+                   font-size: 48px;
+                   font-weight: bold;
+                   text-shadow: 2px 2px 4px #aaa;'>
+            Welcome to the GCP Refresher Course
+        </h1>
+    </div>
+    """,
+    unsafe_allow_html=True
 )
 
 st.markdown("<h2 style='text-align:right; direction:rtl;'>נא להזין את פרטיך</h2>", unsafe_allow_html=True)
