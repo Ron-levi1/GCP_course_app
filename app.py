@@ -223,7 +223,15 @@ if st.session_state.get("quiz_started"):
             filled_docx = os.path.join(OUTPUT_DIR, f"תעודה_{st.session_state['id_number']}.docx")
             cert_doc.save(filled_docx)
 
-            st.success("✅ התעודה נשמרה בהצלחה בתיקיית output")
+            with open(filled_docx, "rb") as f:
+                st.download_button(
+                    label="📥 הורד תעודה",
+                    data=f,
+                    file_name=f"תעודה_{st.session_state['id_number']}.docx",
+                    mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                )
+            st.success("✅ התעודה נשמרה בהצלחה בתיקיית OUTPUT")
+
 
 
 
