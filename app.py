@@ -4,6 +4,9 @@ import pandas as pd
 from docx import Document
 from docx2pdf import convert
 import os
+from pydrive.auth import GoogleAuth
+from pydrive.drive import GoogleDrive
+
 
 st.markdown(
     """
@@ -212,8 +215,6 @@ if st.session_state.get("quiz_started"):
         if score >= 80:
             st.success("כל הכבוד! עברת את הרענון בהצלחה.")
 
-            from pydrive.auth import GoogleAuth
-            from pydrive.drive import GoogleDrive
 
             cert_doc = Document(CERTIFICATE_TEMPLATE)
             for p in cert_doc.paragraphs:
