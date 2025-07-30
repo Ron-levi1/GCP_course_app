@@ -21,7 +21,7 @@ st.markdown(
         font-family: Calibri, sans-serif;
     }
     .stButton>button {
-        background-color: #4CAF50;
+        background-color: #d8629c;
         color: white;
         padding: 10px 24px;
         text-align: center;
@@ -34,7 +34,7 @@ st.markdown(
         border: none;
     }
     .stButton>button:hover {
-        background-color: #45a049;
+        background-color: #d8629c;
         color: white;
     }
     </style>
