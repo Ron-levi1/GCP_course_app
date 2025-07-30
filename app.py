@@ -227,13 +227,10 @@ if st.session_state.get("quiz_started"):
                 st.download_button(
                     label="📥 הורד תעודה",
                     data=f,
-                    file_name=f"תעודה_{st.session_state['id_number']}.docx",
+                    file_name=f"GCP_certificate{st.session_state['id_number']}.docx",
                     mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                 )
-            st.success("✅ התעודה נשמרה בהצלחה בתיקיית OUTPUT")
-
-
-
+            st.success("יש להוריד את התעודה")
 
 
         else:
