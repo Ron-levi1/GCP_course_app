@@ -91,7 +91,20 @@ OUTPUT_DIR = "output"
 if not os.path.exists(OUTPUT_DIR):
     os.makedirs(OUTPUT_DIR)
 
-st.title("welcome to the GCP refresher course")
+import streamlit as st
+
+st.markdown(
+    """
+    <h1 style='text-align: center; 
+               color: #4CAF50; 
+               font-family: Arial, sans-serif; 
+               font-size: 50px;
+               text-shadow: 2px 2px 4px #aaa;'>
+        Welcome to the GCP Refresher Course
+    </h1>
+    """, unsafe_allow_html=True
+)
+
 st.markdown("<h2 style='text-align:right; direction:rtl;'>נא להזין את פרטיך</h2>", unsafe_allow_html=True)
 
 name = st.text_input("שם מלא באנגלית")
