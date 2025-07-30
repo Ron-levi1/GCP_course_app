@@ -211,6 +211,21 @@ if st.session_state.get("quiz_started"):
 
         if score >= 80:
             st.success("כל הכבוד! עברת את הרענון בהצלחה.")
+
+            cert_doc = Document(CERTIFICATE_TEMPLATE)
+            for p in cert_doc.paragraphs:
+                if "[the name]" in p.text:
+                    p.text = p.text.replace("[the name]", st.session_state["name"])
+                if "[the ID]" in p.text:
+                    p.text = p.text.replace("[the ID]", st.session_state["id_number"])
+
+            filled_docx = os.path.join(OUTPUT_DIR, f"תעודה_{st.session_state['id_number']}.docx")
+            cert_doc.save(filled_docx)
+
+            filled_pdf = os.path.join(OUTPUT_DIR, f"תעודה_{st.session_state['id_number']}.pdf")
+            convert(filled_docx, filled_pdf)
+
+
         else:
             st.error("לא עברת את המבחן. נסה שוב.")
 
