@@ -98,7 +98,7 @@ import streamlit as st
 st.markdown(
     """
     <div style='display: flex; justify-content: center; align-items: center;'>
-        <h1 style='color: #f0b6d3;
+        <h1 style='color: #d89bb9;
                    font-family: Arial, sans-serif;
                    font-size: 50px;
                    font-weight: bold;
