@@ -1,3 +1,5 @@
+pip install pydrive
+
 import streamlit as st
 import re
 import pandas as pd
