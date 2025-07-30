@@ -97,12 +97,14 @@ import streamlit as st
 
 st.markdown(
     """
-     <div style='display: flex; justify-content: center; align-items: center;'>
+    <div style='display: flex; justify-content: center; align-items: center;'>
         <h1 style='color: #e75480;
                    font-family: Arial, sans-serif;
-                   font-size: 48px;
+                   font-size: 50px;
                    font-weight: bold;
-                   text-shadow: 2px 2px 4px #aaa;'>
+                   text-shadow: 2px 2px 4px #aaa;
+                   margin: 20px 0;
+                   white-space: nowrap;'>
             Welcome to the GCP Refresher Course
         </h1>
     </div>
