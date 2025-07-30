@@ -222,8 +222,7 @@ if st.session_state.get("quiz_started"):
             filled_docx = os.path.join(OUTPUT_DIR, f"תעודה_{st.session_state['id_number']}.docx")
             cert_doc.save(filled_docx)
 
-            filled_pdf = os.path.join(OUTPUT_DIR, f"תעודה_{st.session_state['id_number']}.pdf")
-            convert(filled_docx, filled_pdf)
+            st.success("✅ נוצרה תעודה! יש לפנות לועדת הלסינקי על מנת לקבל אותה")
 
 
         else:
