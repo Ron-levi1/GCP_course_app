@@ -219,7 +219,7 @@ if st.session_state.get("quiz_started"):
                 if opt == result["correct"]:
                     st.markdown(f"✅ **{opt}**")
                 elif opt == result["selected"]:
-                    st.markdown(f"🔴 {opt}")
+                    st.markdown(f"❌ {opt}")
                 else:
                     st.markdown(f"{opt}")
             st.markdown("---")
