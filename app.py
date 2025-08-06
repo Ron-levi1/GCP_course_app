@@ -113,7 +113,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.markdown("<h2 style='text-align:right; direction:rtl;'>נא להזין את פרטיך</h2>", unsafe_allow_html=True)
+st.markdown("<h2 style='text-align:right; direction:rtl;'>יש להזין את פרטיך</h2>", unsafe_allow_html=True)
 
 name = st.text_input("שם מלא באנגלית")
 if name and not re.match(r'^[A-Za-z ]+$', name):
