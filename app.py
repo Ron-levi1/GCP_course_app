@@ -2,6 +2,7 @@ import streamlit as st
 import re
 import pandas as pd
 import os
+import fitz  # PyMuPDF
 import base64
 
 st.set_page_config(page_title="GCP Refresher Course", layout="wide")
@@ -51,13 +52,16 @@ if st.button("אישור"):
 # מצגת PDF
 if st.session_state.get("registered"):
     st.markdown("<h2 style='text-align:center;'>יש לעבור על מצגת הקורס, בסיומה יש לענות על המבחן</h2>", unsafe_allow_html=True)
-    st.markdown("<h2 style='text-align:center; font-size: 16px;'>לנוחיותכם, יש להגדיל את המצגת למסך מלא</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align:center; font-size: 16px;'>📄 לצפייה במצגת – לחצו להורדה</h2>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align:center; font-size:14px;'>במידה והקובץ לא נפתח לכם, יש להוריד אותו למחשב ולאחר מכן לעבור למבחן</p>", unsafe_allow_html=True)
 
-    # תצוגת PDF
     with open(PDF_FILE, "rb") as f:
-        base64_pdf = base64.b64encode(f.read()).decode("utf-8")
-    pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="100%" height="700px" type="application/pdf"></iframe>'
-    st.markdown(pdf_display, unsafe_allow_html=True)
+        st.download_button(
+            label="📥 הורד את מצגת הקורס (PDF)",
+            data=f,
+            file_name=PDF_FILE,
+            mime="application/pdf"
+        )
 
     if st.button("עבור למבחן"):
         st.session_state["quiz_started"] = True
