@@ -5,7 +5,7 @@ import os
 import base64
 
 QUESTIONS_FILE = "אקסל שאלות + התשובה הנכונה.xlsx"
-PDF_PATH = "files/קורס רענון לחידוש התעודה - גרסה סופית.pdf"
+PDF_PATH = "קורס רענון לחידוש התעודה - גרסה סופית.pdf"
 LOG_PATH = "success_log.csv"
 
 def log_success(name, id_number):
