@@ -2,52 +2,63 @@ import streamlit as st
 import re
 import pandas as pd
 import os
-import base64
 
-# הגדרות עיצוב
+# עיצוב
 st.markdown("""
     <style>
-    .block-container { direction: rtl; text-align: right; font-family: Arial, sans-serif; }
-    h1, h2, h3, h4, h5, h6 { text-align: center; font-family: Arial, sans-serif; }
-    p, label, .stRadio, .stButton { font-family: Arial, sans-serif; }
+    .block-container {
+        direction: rtl;
+        text-align: right;
+        font-family: Arial, sans-serif;
+    }
+    h1, h2, h3, h4, h5, h6 {
+        text-align: center;
+        font-family: Arial, sans-serif;
+    }
+    p, label, .stRadio, .stButton {
+        font-family: Arial, sans-serif;
+    }
     .stButton>button {
         background-color: #d8629c;
         color: white;
         padding: 10px 24px;
         text-align: center;
+        text-decoration: none;
+        display: inline-block;
         font-size: 16px;
         margin: 4px 2px;
         border-radius: 8px;
+        transition-duration: 0.4s;
         border: none;
     }
     .stButton>button:hover {
         background-color: #d8629c;
         color: white;
     }
+    .question {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    .answer {
+        margin-left: 20px;
+    }
     </style>
 """, unsafe_allow_html=True)
 
-
-# פונקציה להצגת PDF מקומי
-def show_pdf(file_path):
-    with open(file_path, "rb") as f:
-        base64_pdf = base64.b64encode(f.read()).decode("utf-8")
-    pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="100%" height="750" type="application/pdf"></iframe>'
-    st.markdown(pdf_display, unsafe_allow_html=True)
-
-
+# קבצים
 QUESTIONS_FILE = "אקסל שאלות + התשובה הנכונה.xlsx"
+PDF_FILE = "GCP_Course_final.pdf"
 
 # כותרת
 st.markdown("""
     <div style='display: flex; justify-content: center; align-items: center;'>
-        <h1 style='color: #d89bb9; font-family: Arial, sans-serif; font-size: 50px; font-weight: bold;
-         text-shadow: 2px 2px 4px #aaa; margin: 20px 0; white-space: nowrap;'>
-        Welcome to the GCP Refresher Course</h1>
+        <h1 style='color: #d89bb9; font-family: Arial, sans-serif; font-size: 50px; font-weight: bold; text-shadow: 2px 2px 4px #aaa; margin: 20px 0; white-space: nowrap;'>
+            Welcome to the GCP Refresher Course
+        </h1>
     </div>
 """, unsafe_allow_html=True)
 
-# טופס התחברות
+# קלט משתמש
 st.markdown("<h2 style='text-align:right; direction:rtl;'>יש להזין את פרטיך</h2>", unsafe_allow_html=True)
 name = st.text_input("שם מלא באנגלית")
 if name and not re.match(r'^[A-Za-z ]+$', name):
@@ -65,15 +76,15 @@ if st.button("אישור"):
     else:
         st.warning("נא למלא שם ותעודת זהות")
 
-# אחרי התחברות
+# מצגת PDF
 if st.session_state.get("registered"):
-    st.markdown("<h2 style='text-align:center; direction:rtl;'>יש לעבור על מצגת הקורס, בסיומה יש לענות על המבחן</h2>",
-                unsafe_allow_html=True)
-    st.markdown(
-        "<h2 style='text-align:center; direction:rtl;font-size: 16px;'>לנוחיותכם, יש להגדיל את המצגת למסך מלא</h2>",
-        unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align:center; direction:rtl;'>יש לעבור על מצגת הקורס, בסיומה יש לענות על המבחן</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align:center; direction:rtl;font-size: 16px;'>לנוחיותכם, יש להגדיל את המצגת למסך מלא</h2>", unsafe_allow_html=True)
 
-    show_pdf("GCP_Course_final.pdf")  # הצגת קובץ ה־PDF המקומי
+    with open(PDF_FILE, "rb") as f:
+        base64_pdf = base64.b64encode(f.read()).decode('utf-8')
+        pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="100%" height="800px" type="application/pdf"></iframe>'
+        st.markdown(pdf_display, unsafe_allow_html=True)
 
     if st.button("עבור למבחן"):
         st.session_state["quiz_started"] = True
@@ -81,9 +92,7 @@ if st.session_state.get("registered"):
 # מבחן
 if st.session_state.get("quiz_started"):
     st.markdown("<h2 style='text-align:center; direction:rtl;'>מבחן:</h2>", unsafe_allow_html=True)
-    st.markdown(
-        "<h3 style='text-align:center; direction:rtl; color:gray; font-size:17px; font-weight:normal;margin-bottom:30px;'>יש לעבור את המבחן בציון 80 לפחות על מנת לקבל את התעודה</h3>",
-        unsafe_allow_html=True)
+    st.markdown("<h3 style='text-align:center; direction:rtl; color:gray; font-size:17px; font-weight:normal;margin-bottom:30px;'>יש לעבור את המבחן בציון 80 לפחות על מנת לקבל את התעודה</h3>", unsafe_allow_html=True)
 
     df = pd.read_excel(QUESTIONS_FILE)
 
@@ -96,7 +105,7 @@ if st.session_state.get("quiz_started"):
         st.session_state["answers"] = [None] * len(questions)
 
     for i, row in questions.iterrows():
-        st.markdown(f"<div class='question'>{i + 1}. {row['question']}</div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='question'>{i+1}. {row['question']}</div>", unsafe_allow_html=True)
         selected = st.radio(
             "",
             [row['option_a'], row['option_b'], row['option_c'], row['option_d']],
@@ -126,14 +135,14 @@ if st.session_state.get("quiz_started"):
 
         if score >= 80:
             st.success("כל הכבוד! עברת את הרענון בהצלחה.")
+            st.info("התעודה אינה מופקת בגרסה זו.")
         else:
             st.error("לא עברת את המבחן. נסה שוב.")
 
-        # פירוט תשובות – תמיד מוצג
         st.markdown("---")
         st.subheader("פירוט התשובות")
         for idx, result in enumerate(results):
-            st.markdown(f"**{idx + 1}. {result['question']}**")
+            st.markdown(f"**{idx+1}. {result['question']}**")
             for opt in result["options"]:
                 if opt == result["correct"]:
                     st.markdown(f"✅ **{opt}**")
