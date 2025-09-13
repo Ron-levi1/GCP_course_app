@@ -10,7 +10,13 @@ st.set_page_config(page_title="GCP Refresher Course", layout="wide")
 # CSS לעיצוב
 st.markdown("""
 <style>
-.block-container { direction: rtl; text-align: right; font-family: Arial, sans-serif; }
+.block-container {
+    direction: rtl;
+    text-align: right;
+    font-family: Arial, sans-serif;
+    max-width: 850px;
+    margin: auto;
+}
 h1, h2, h3, h4, h5, h6 { text-align: center; font-family: Arial, sans-serif; }
 p, label, .stRadio, .stButton { font-family: Arial, sans-serif; }
 .stButton>button {
