@@ -117,12 +117,8 @@ if st.session_state.get("quiz_started"):
         for idx, result in enumerate(results):
             st.markdown(f"**{idx+1}. {result['question']}**")
             for opt in result["options"]:
-                if opt == result["correct"] and opt == result["selected"]:
-                    st.markdown(f"✅ **{opt}**")
-                elif opt == result["correct"]:
-                    st.markdown(f"✅ **{opt}**")
-                elif opt == result["selected"]:
-                    st.markdown(f"❌ {opt}")
+                if opt == result["correct"]:
+                    st.markdown(f"✔️ **{opt}**")
                 else:
                     st.markdown(f"{opt}")
             st.markdown("---")
