@@ -1,161 +1,55 @@
 import streamlit as st
+from PyPDF2 import PdfReader
 import pandas as pd
-import re
 import os
-import base64
-from docx import Document
 
-QUESTIONS_FILE = "אקסל שאלות + התשובה הנכונה.xlsx"
-CERTIFICATE_TEMPLATE = "CERTIFICATE.docx"
+# הגדרות קובץ המצגת
+PDF_PATH = "GCP_Course_final.pdf"
 OUTPUT_DIR = "output"
-PDF_PATH = "files/GCP_Course.pdf"
-LOG_PATH = "success_log.csv"
+LOG_PATH = os.path.join(OUTPUT_DIR, "success_log.csv")
 
-def log_success(name, id_number):
-    if os.path.exists(LOG_PATH):
-        df = pd.read_csv(LOG_PATH)
-    else:
-        df = pd.DataFrame(columns=["Name", "ID"])
-    new_entry = pd.DataFrame([{"Name": name, "ID": id_number}])
-    df = pd.concat([df, new_entry], ignore_index=True)
-    df.to_csv(LOG_PATH, index=False)
+# ודא שתיקיית פלט קיימת
+os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-if not os.path.exists(OUTPUT_DIR):
-    os.makedirs(OUTPUT_DIR)
-
-st.set_page_config(layout="wide")
-
+# עיצוב דחוס יותר
 st.markdown("""
     <style>
-    .block-container { direction: rtl; text-align: right; font-family: Arial, sans-serif; }
-    h1, h2, h3, h4, h5, h6 { text-align: center; font-family: Arial, sans-serif; }
-    .question { font-weight: bold; margin-bottom: 5px; }
-    .stButton>button {
-        background-color: #d8629c; color: white; padding: 10px 24px; font-size: 16px;
-        border-radius: 8px; border: none;
-    }
-    .stButton>button:hover { background-color: #d8629c; color: white; }
+    .main { max-width: 1000px; margin: auto; }
+    .title { text-align: center; font-size: 36px; font-weight: bold; margin-bottom: 10px; }
     </style>
 """, unsafe_allow_html=True)
 
-st.markdown("""
-    <div style='display: flex; justify-content: center; align-items: center;'>
-        <h1 style='color: #d89bb9; font-family: Arial, sans-serif; font-size: 50px; font-weight: bold;
-                   text-shadow: 2px 2px 4px #aaa; margin: 20px 0; white-space: nowrap;'>
-            Welcome to the GCP Refresher Course
-        </h1>
-    </div>
-""", unsafe_allow_html=True)
+# כותרת בעיצוב מותאם
+st.markdown('<div class="title">Welcome to the GCP Refresher Course</div>', unsafe_allow_html=True)
 
-st.markdown("<h2 style='text-align:right;'>יש להזין את פרטיך</h2>", unsafe_allow_html=True)
+# הוראות כלליות
+st.markdown("### 🧠 כדי לעבור על הקורס, יש לצפות במצגת המלאה ולאחר מכן לעבור למבחן")
 
-name = st.text_input("שם מלא באנגלית")
-if name and not re.match(r'^[A-Za-z ]+$', name):
-    st.error("יש להכניס שם באנגלית בלבד")
-
-id_number = st.text_input("ID number")
-if id_number and not re.match(r'^\d{9}$', id_number):
-    st.error("מספר תעודת הזהות חייב להכיל 9 ספרות בלבד")
-
-if st.button("אישור"):
-    if name and id_number:
-        st.session_state["registered"] = True
-        st.session_state["name"] = name
-        st.session_state["id_number"] = id_number
-    else:
-        st.warning("נא למלא שם ותעודת זהות")
-
-if st.session_state.get("registered"):
-    st.markdown("<h2 style='text-align:center;'>יש לעבור על מצגת הקורס, בסיומה יש לענות על המבחן</h2>", unsafe_allow_html=True)
-    st.markdown("<h2 style='text-align:center;font-size: 16px;'>לנוחיותכם, יש להגדיל את המצגת למסך מלא</h2>", unsafe_allow_html=True)
-
+# מציג את המצגת (PDF)
+try:
     with open(PDF_PATH, "rb") as f:
-        base64_pdf = base64.b64encode(f.read()).decode('utf-8')
-        pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="100%" height="800px" type="application/pdf"></iframe>'
-        st.markdown(pdf_display, unsafe_allow_html=True)
+        reader = PdfReader(f)
+        for i, page in enumerate(reader.pages):
+            text = page.extract_text()
+            if text:
+                st.markdown(f"#### Slide {i + 1}")
+                st.write(text)
+except FileNotFoundError:
+    st.error("הקובץ GCP_Course_final.pdf לא נמצא. ודא שהוא בתיקיית הפרויקט!")
 
-    if st.button("עבור למבחן"):
-        st.session_state["quiz_started"] = True
+# קבלת שם ומספר תעודת זהות מהמשתמש
+st.markdown("### 📋 אנא הזינו את פרטיכם כדי להיבחן")
+name = st.text_input("שם מלא")
+id_number = st.text_input("מספר תעודת זהות")
 
-if st.session_state.get("quiz_started"):
-    st.markdown("<h2 style='text-align:center;'>מבחן:</h2>", unsafe_allow_html=True)
-    st.markdown("<h3 style='text-align:center; color:gray; font-size:17px;'>יש לעבור את המבחן בציון 80 לפחות על מנת לקבל את התעודה</h3>", unsafe_allow_html=True)
-
-    df = pd.read_excel(QUESTIONS_FILE)
-
-    if "questions" not in st.session_state:
-        st.session_state["questions"] = df.sample(10).reset_index(drop=True)
-
-    questions = st.session_state["questions"]
-
-    if "answers" not in st.session_state:
-        st.session_state["answers"] = [None] * len(questions)
-
-    for i, row in questions.iterrows():
-        st.markdown(f"<div class='question'>{i+1}. {row['question']}</div>", unsafe_allow_html=True)
-        selected = st.radio(
-            "",
-            [row['option_a'], row['option_b'], row['option_c'], row['option_d']],
-            index=None,
-            key=f"q_{i}"
-        )
-        st.session_state["answers"][i] = selected if selected else st.session_state["answers"][i]
-        st.markdown("<br>", unsafe_allow_html=True)
-
-    if st.button("שלח מבחן"):
-        correct = 0
-        results = []
-
-        for i, row in questions.iterrows():
-            user_answer = st.session_state["answers"][i]
-            if user_answer == row['correct']:
-                correct += 1
-            results.append({
-                "question": row['question'],
-                "options": [row['option_a'], row['option_b'], row['option_c'], row['option_d']],
-                "correct": row['correct'],
-                "selected": user_answer,
-                "explanation": row.get("explanation", "")
-            })
-
-        score = round((correct / 10) * 100, 2)
-        st.write(f"ציון סופי: {correct}/10 ({score}%)")
-
-        if score >= 80:
-            st.success("🎉 כל הכבוד! עברת את המבחן בהצלחה. התעודה תישלח במייל.")
-            log_success(st.session_state["name"], st.session_state["id_number"])
-
-            cert_doc = Document(CERTIFICATE_TEMPLATE)
-            for p in cert_doc.paragraphs:
-                if "[the name]" in p.text:
-                    p.text = p.text.replace("[the name]", st.session_state["name"])
-                if "[the ID]" in p.text:
-                    p.text = p.text.replace("[the ID]", st.session_state["id_number"])
-
-            filled_docx = os.path.join(OUTPUT_DIR, f"תעודה_{st.session_state['id_number']}.docx")
-            cert_doc.save(filled_docx)
-
-            with open(filled_docx, "rb") as f:
-                st.download_button(
-                    label="📥 הורד תעודה",
-                    data=f,
-                    file_name=f"GCP_certificate{st.session_state['id_number']}.docx",
-                    mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                )
+# כפתור התחלת מבחן (כרגע רק שומר את הפרטים בקובץ CSV)
+if st.button("אני מוכן/ה למבחן"):
+    if name and id_number:
+        df = pd.DataFrame([[name, id_number]], columns=["Name", "ID"])
+        if os.path.exists(LOG_PATH):
+            df.to_csv(LOG_PATH, mode='a', header=False, index=False)
         else:
-            st.error("לא עברת את המבחן. נסה שוב.")
-
-        st.markdown("---")
-        st.subheader("פירוט התשובות")
-
-        for idx, result in enumerate(results):
-            st.markdown(f"**{idx+1}. {result['question']}**")
-            for opt in result["options"]:
-                if opt == result["correct"]:
-                    st.markdown(f"✅ **{opt}**")
-                elif opt == result["selected"]:
-                    st.markdown(f"❌ {opt}")
-                else:
-                    st.markdown(f"{opt}")
-            st.markdown(f"<span style='color:gray;font-size:14px;'>הסבר: {result['explanation']}</span>", unsafe_allow_html=True)
-            st.markdown("---")
+            df.to_csv(LOG_PATH, index=False)
+        st.success("נרשמת בהצלחה! בהצלחה במבחן 🎓")
+    else:
+        st.warning("נא למלא את כל השדות")
